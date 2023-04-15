@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Texto a Voz</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: sans-serif;
+        background-color: #f0f0f0;
+        display: grid;
+        place-items: center;
+      }
+      .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        max-width: min(90vw, 600px);
+        height: 100vh;
+        background-color: #f0f0f0;
+      }
+
+      textarea {
+        width: 80%;
+        height: 200px;
+        margin-bottom: 10px;
+      }
+
+      button {
+        width: 80%;
+        height: 40px;
+        margin-bottom: 10px;
+        background-color: #2980b9;
+        color: white;
+        font-size: 18px;
+        cursor: pointer;
+        border: none;
+        outline: none;
+        border-radius: 2px;
+      }
+
+      select {
+        width: 80%;
+        height: 40px;
+        margin-bottom: 10px;
+        font-size: 18px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <select id="languageSelect">
+        <option value="en">English</option>
+        <option value="es">Español</option>
+        <option value="fr">Français</option>
+      </select>
+      <textarea id="textArea" placeholder="Pega el texto aquí"></textarea>
+      <button id="speakBtn">Read text</button>
+      <button id="clearBtn">Clean</button>
+    </div>
+    <script>
+      let utterance;
+      const languageSelect = document.getElementById("languageSelect");
+      const speakBtn = document.getElementById("speakBtn");
+      const clearBtn = document.getElementById("clearBtn");
+      const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+      function splitText(text, maxLength) {
+        const regex = new RegExp(`.{1,${maxLength}}(\\s|$)`, "g");
+        return text.match(regex);
+      }
+
+      async function speakText(text, lang) {
+        const maxLength = 200;
+        const textSegments = splitText(text, maxLength);
+
+        for (const segment of textSegments) {
+          utterance = new SpeechSynthesisUtterance(segment);
+          utterance.lang = lang;
+          speechSynthesis.speak(utterance);
+          await new Promise((resolve) => {
+            utterance.onend = resolve;
+          });
+        }
+      }
+
+      speakBtn.addEventListener("click", async function () {
+        speechSynthesis.cancel();
+        const text = document.getElementById("textArea").value;
+        await speakText(text, languageSelect.value);
+      });
+
+      clearBtn.addEventListener("click", function () {
+        document.getElementById("textArea").value = "";
+        speechSynthesis.cancel();
+      });
+
+      languageSelect.addEventListener("change", function () {
+        const selectedLang = languageSelect.value;
+        switch (selectedLang) {
+          case "es":
+            document.getElementById("textArea").placeholder =
+              "Pega el texto aquí";
+            break;
+          case "en":
+            document.getElementById("textArea").placeholder =
+              "Paste the text here";
+            break;
+          case "fr":
+            document.getElementById("textArea").placeholder =
+              "Collez le texte ici";
+            break;
+        }
+      });
+    </script>
+  </body>
+</html>
