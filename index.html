@@ -4,6 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Texto a Voz</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      crossorigin="anonymous"
+    />
     <style>
       body {
         margin: 0;
@@ -49,10 +54,37 @@
         margin-bottom: 10px;
         font-size: 18px;
       }
+
+      .social-links {
+        display: flex;
+        justify-content: space-around;
+        width: 80%;
+        margin-bottom: 20px;
+      }
+
+      .social-links a {
+        color: #333;
+        font-size: 24px;
+        text-decoration: none;
+      }
     </style>
   </head>
   <body>
     <div class="container">
+      <div class="social-links">
+        <a href="https://www.linkedin.com/in/jaan-carlo/" target="_blank">
+          <i class="fab fa-linkedin"></i>
+        </a>
+        <a href="https://twitter.com/janrt03243200" target="_blank">
+          <i class="fab fa-twitter"></i>
+        </a>
+        <a href="https://github.com/carlo-coding" target="_blank">
+          <i class="fab fa-github"></i>
+        </a>
+        <a href="http://jaancrt.com/" target="_blank">
+          <i class="fas fa-briefcase"></i>
+        </a>
+      </div>
       <select id="languageSelect">
         <option value="en">English</option>
         <option value="es">Español</option>
